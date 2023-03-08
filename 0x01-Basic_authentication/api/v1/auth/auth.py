@@ -12,7 +12,8 @@ class Auth:
         pass
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """public method for auth class to check if path requires authentication
+        """public method for auth class to check if path requires
+            authentication
 
         Args:
             path (str): path to check
