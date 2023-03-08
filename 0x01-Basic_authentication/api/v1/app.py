@@ -41,7 +41,7 @@ def forbidden(error) -> str:
     return jsonify({"error": "Forbidden"}), 403
 
 
-@app.before_request()
+@app.before_request
 def before_request() -> None:
     """Method called before every request"""
     excluded_paths = [
