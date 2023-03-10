@@ -23,6 +23,24 @@ elif AUTH_TYPE == "basic_auth":
     auth = BasicAuth()
 
 
+@app.before_request
+def before_req() -> None:
+    """Method called before every request"""
+    if auth is None:
+        pass
+    else:
+        excluded = [
+            '/api/v1/status/',
+            '/api/v1/unauthorized/',
+            '/api/v1/forbidden/'
+        ]
+        if auth.require_auth(request.path, excluded):
+            if auth.authorization_header(request) is None:
+                abort(401, description="Unauthorized")
+            if auth.current_user(request) is None:
+                abort(403, description="Forbidden")
+
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
@@ -43,24 +61,6 @@ def forbidden(error) -> str:
     """
     Forbidden error handler"""
     return jsonify({"error": "Forbidden"}), 403
-
-
-@app.before_request
-def before_request() -> None:
-    """Method called before every request"""
-    if auth is None:
-        pass
-    else:
-        excluded = [
-            '/api/v1/status/',
-            '/api/v1/unauthorized/',
-            '/api/v1/forbidden/'
-        ]
-        if auth.require_auth(request.path, excluded):
-            if auth.authorization_header(request) is None:
-                abort(401, description="Unauthorized")
-            if auth.current_user(request) is None:
-                abort(403, description="Forbidden")
 
 
 if __name__ == "__main__":
