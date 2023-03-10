@@ -47,18 +47,19 @@ def forbidden(error) -> str:
 @app.before_request
 def before_request() -> None:
     """Method called before every request"""
-    excluded_paths = [
-        '/api/v1/status/',
-        '/api/v1/unauthorized/',
-        '/api/v1/forbidden/'
-    ]
-
-    if auth is not None:
-        if auth.requires_auth(request.path, excluded_paths):
+    if auth is None:
+        pass
+    else:
+        excluded = [
+            '/api/v1/status/',
+            '/api/v1/unauthorized/',
+            '/api/v1/forbidden/'
+        ]
+        if auth.require_auth(request.path, excluded):
             if auth.authorization_header(request) is None:
-                raise abort(401)
+                abort(401, description="Unauthorized")
             if auth.current_user(request) is None:
-                raise abort(403)
+                abort(403, description="Forbidden")
 
 
 if __name__ == "__main__":
