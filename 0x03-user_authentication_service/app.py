@@ -59,13 +59,12 @@ def login():
 def logout():
     """user logout route"""
     session_id = request.cookies.get('session_id')
-    if session_id:
+    if session_id is not None:
         user = AUTH.get_user_from_session_id(session_id)
-        if user:
+        if user is not None:
             AUTH.destroy_session(user.id)
-            redirect(url_for('/'))
-            return
-    abort(403)
+            return redirect('/')
+    return abort(403)
 
 
 if __name__ == "__main__":
