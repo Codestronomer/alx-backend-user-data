@@ -7,7 +7,9 @@ from flask import (
         jsonify,
         request,
         make_response,
-        abort
+        abort,
+        redirect,
+        url_for
         )
 from auth import Auth
 
@@ -51,6 +53,19 @@ def login():
             return abort(401)
     except Exception as err:
         return err
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout():
+    """user logout route"""
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user:
+            AUTH.destroy_session(user.id)
+            redirect(url_for('/'))
+            return
+    abort(403)
 
 
 if __name__ == "__main__":
