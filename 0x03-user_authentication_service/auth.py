@@ -12,7 +12,6 @@ def _hash_password(password: str) -> str:
     """
     method takes a password string and return hashed byte value
     """
-    # encoded_pwd = bytes(password, 'utf-8')
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
     return hashed_password
 
