@@ -21,6 +21,7 @@ def _generate_uuid() -> UUID:
     """ Generates a uuid object and returns it"""
     return str(UUID())
 
+
 class Auth:
     """
     Auth class to interact with the authentication database
