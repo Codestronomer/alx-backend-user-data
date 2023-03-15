@@ -56,10 +56,10 @@ class DB:
         """
         try:
             users = self._session.query(User).filter_by(**kwargs).first()
-            if users is None:
-                raise NoResultFound
-        except (InvalidRequestError)as err:
+        except (InvalidRequestError) as err:
             raise err
+        if users is None:
+                raise NoResultFound
         return users
 
     def update_user(self, user_id: int, **kwargs) -> None:
