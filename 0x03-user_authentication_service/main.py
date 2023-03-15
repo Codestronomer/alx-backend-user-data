@@ -43,7 +43,7 @@ email = "me@me.com"
 password = "mySecurePwd"
 
 auth = Auth()
-
+"""
 try:
     user = auth.register_user(email, password)
     print("Successfully created a new user!")
@@ -55,3 +55,10 @@ try:
     print("successfully created a new user!")
 except ValueError as err:
     print("could not create a new user: {}".format(err))
+"""
+
+auth.register_user(email, password)
+
+print(auth.valid_login(email, password))
+print(auth.valid_login(email, "WrongPwd"))
+print(auth.valid_login("unknown@email", password))
