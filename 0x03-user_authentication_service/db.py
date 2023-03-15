@@ -54,14 +54,13 @@ class DB:
         Return:
             User object or error if not found
         """
-        users = self._session.query(User).all()
-        for key, value in kwargs.items():
-            if key not in User.__dict__:
-                raise InvalidRequestError
-            for user in users:
-                if getattr(user, key) == value:
-                    return user
-        raise NoResultFound
+        try:
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if user is None:
+                raise NoResultFound
+        except InvalidRequestError as err:
+            raise err
+        return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Method uses self.find_user_by to locate the user to update,
