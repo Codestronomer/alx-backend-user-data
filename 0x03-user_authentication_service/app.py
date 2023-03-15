@@ -18,7 +18,7 @@ def home():
     return jsonify({"message": "Bienvenue"})
 
 
-@app.route('/user', methods=['POST'], strict_slashes=False)
+@app.route('/users', methods=['POST'], strict_slashes=False)
 def register_user():
     email, password = request.form['email'], request.form['password']
     try:
